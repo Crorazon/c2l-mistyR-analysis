@@ -1,19 +1,8 @@
 # =============================================================================
-# c2l-mistyR R环境依赖安装脚本
+# c2l-mistyR项目 R环境依赖安装脚本
 # =============================================================================
-# Cell2location + MistyR 多样本空间细胞共定位分析流程
-# R环境依赖包安装脚本
-# 
-# 使用方法:
-# source("install_R_packages.R")
-# 
-# 或在命令行运行:
-# Rscript install_R_packages.R
-# =============================================================================
-
-cat("=== c2l-mistyR R环境配置 ===")
-cat("开始安装R依赖包...")
-cat("安装时间:", Sys.time(), "")
+# 本脚本将自动安装MistyR多样本空间细胞共定位分析所需的所有R包
+# 运行方法: source("install_R_packages.R")
 
 # 设置CRAN镜像
 options(repos = c(CRAN = "https://cran.rstudio.com/"))
@@ -22,7 +11,7 @@ options(repos = c(CRAN = "https://cran.rstudio.com/"))
 install_if_missing <- function(packages, source = "CRAN") {
   for (pkg in packages) {
     if (!require(pkg, character.only = TRUE, quietly = TRUE)) {
-      cat("安装包:", pkg, "来源:", source, "")
+      cat("Installing", pkg, "from", source, "...\n")
       
       if (source == "CRAN") {
         install.packages(pkg, dependencies = TRUE)
@@ -40,12 +29,12 @@ install_if_missing <- function(packages, source = "CRAN") {
       
       # 验证安装
       if (require(pkg, character.only = TRUE, quietly = TRUE)) {
-        cat("✓ 成功安装:", pkg, "")
+        cat("✓", pkg, "installed successfully\n")
       } else {
-        cat("✗ 安装失败:", pkg, "")
+        cat("✗ Failed to install", pkg, "\n")
       }
     } else {
-      cat("✓ 已安装:", pkg, "")
+      cat("✓", pkg, "already installed\n")
     }
   }
 }
@@ -53,197 +42,206 @@ install_if_missing <- function(packages, source = "CRAN") {
 # =============================================================================
 # 核心依赖包
 # =============================================================================
-
-cat("--- 安装核心依赖包 ---")
+cat("=== Installing Core Dependencies ===\n")
 core_packages <- c(
-  "devtools",      # 开发工具
-  "BiocManager",   # Bioconductor管理器
-  "remotes",       # 远程包安装
-  "renv",          # 环境管理
-  "here",          # 路径管理
-  "config"         # 配置管理
+  "devtools",
+  "BiocManager",
+  "remotes",
+  "pak"
 )
 install_if_missing(core_packages, "CRAN")
 
 # =============================================================================
-# 数据处理和操作
+# 数据处理包
 # =============================================================================
-
-cat("--- 安装数据处理包 ---")
+cat("\n=== Installing Data Processing Packages ===\n")
 data_packages <- c(
-  "dplyr",         # 数据操作
-  "tidyr",         # 数据整理
-  "purrr",         # 函数式编程
-  "readr",         # 数据读取
-  "stringr",       # 字符串处理
-  "forcats",       # 因子处理
-  "lubridate",     # 日期时间
-  "data.table",    # 高效数据表
-  "magrittr"       # 管道操作
+  "dplyr",
+  "tidyr",
+  "readr",
+  "stringr",
+  "purrr",
+  "tibble",
+  "magrittr",
+  "data.table",
+  "Matrix",
+  "matrixStats"
 )
 install_if_missing(data_packages, "CRAN")
 
 # =============================================================================
-# 单细胞和空间转录组分析
+# 单细胞分析包
 # =============================================================================
-
-cat("--- 安装单细胞分析包 ---")
-sc_packages <- c(
-  "Seurat",        # 单细胞分析核心
-  "SeuratObject",  # Seurat对象
-  "SingleCellExperiment",  # 单细胞实验对象
-  "scater",        # 单细胞分析工具
-  "scran",         # 单细胞标准化
-  "scuttle"        # 单细胞工具
+cat("\n=== Installing Single Cell Analysis Packages ===\n")
+sc_packages_cran <- c(
+  "Seurat",
+  "SeuratObject",
+  "future",
+  "future.apply",
+  "progressr"
 )
-install_if_missing(sc_packages, "Bioconductor")
+install_if_missing(sc_packages_cran, "CRAN")
+
+# Bioconductor单细胞包
+sc_packages_bioc <- c(
+  "SingleCellExperiment",
+  "SummarizedExperiment",
+  "scater",
+  "scran",
+  "BiocGenerics",
+  "S4Vectors",
+  "IRanges",
+  "GenomicRanges"
+)
+install_if_missing(sc_packages_bioc, "Bioconductor")
 
 # =============================================================================
-# MistyR和空间分析
+# MistyR和空间分析包
 # =============================================================================
-
-cat("--- 安装MistyR和空间分析包 ---")
+cat("\n=== Installing MistyR and Spatial Analysis Packages ===\n")
 spatial_packages <- c(
-  "mistyR",        # MistyR核心包
-  "future",        # 并行计算
-  "future.apply",  # 并行应用
-  "distances",     # 距离计算
-  "FNN",           # 最近邻
-  "dbscan"         # 密度聚类
+  "mistyR",
+  "future",
+  "distances",
+  "FNN",
+  "dbscan",
+  "sp",
+  "sf",
+  "raster",
+  "rgeos",
+  "maptools"
 )
-
-# MistyR从GitHub安装
-if (!require("mistyR", quietly = TRUE)) {
-  cat("从GitHub安装MistyR...")
-  devtools::install_github("saezlab/mistyR")
-}
-
-install_if_missing(spatial_packages[-1], "CRAN")
+install_if_missing(spatial_packages, "CRAN")
 
 # =============================================================================
-# 统计分析和机器学习
+# 统计分析和机器学习包
 # =============================================================================
-
-cat("--- 安装统计分析包 ---")
+cat("\n=== Installing Statistical and ML Packages ===\n")
 stats_packages <- c(
-  "randomForest",  # 随机森林
-  "ranger",        # 快速随机森林
-  "caret",         # 机器学习框架
-  "glmnet",        # 正则化回归
-  "MASS",          # 统计函数
-  "car",           # 回归分析
-  "broom",         # 统计结果整理
-  "corrplot",      # 相关性图
-  "Hmisc"          # 统计工具
+  "randomForest",
+  "caret",
+  "glmnet",
+  "e1071",
+  "cluster",
+  "factoextra",
+  "FactoMineR",
+  "corrplot",
+  "Hmisc",
+  "psych"
 )
 install_if_missing(stats_packages, "CRAN")
 
 # =============================================================================
 # 可视化包
 # =============================================================================
-
-cat("--- 安装可视化包 ---")
-viz_packages <- c(
-  "ggplot2",       # 基础绘图
-  "ggpubr",        # 发表级图表
-  "ggrepel",       # 标签避让
-  "ggsci",         # 科学配色
-  "viridis",       # 颜色方案
-  "RColorBrewer",  # 颜色调色板
-  "scales",        # 图表缩放
-  "gridExtra",     # 图表排列
-  "cowplot",       # 图表组合
-  "patchwork",     # 图表拼接
-  "pheatmap",      # 热图
-  "ComplexHeatmap", # 复杂热图
-  "circlize",      # 圆形图
-  "VennDiagram",   # 韦恩图
-  "UpSetR"         # 集合图
+cat("\n=== Installing Visualization Packages ===\n")
+vis_packages <- c(
+  "ggplot2",
+  "ggpubr",
+  "ggrepel",
+  "ggsci",
+  "RColorBrewer",
+  "viridis",
+  "scales",
+  "gridExtra",
+  "cowplot",
+  "patchwork",
+  "pheatmap",
+  "ComplexHeatmap",
+  "circlize",
+  "VennDiagram",
+  "UpSetR"
 )
+install_if_missing(vis_packages, "CRAN")
 
-# ComplexHeatmap从Bioconductor安装
-install_if_missing("ComplexHeatmap", "Bioconductor")
-install_if_missing(viz_packages[viz_packages != "ComplexHeatmap"], "CRAN")
+# Bioconductor可视化包
+vis_packages_bioc <- c(
+  "ComplexHeatmap",
+  "EnhancedVolcano"
+)
+install_if_missing(vis_packages_bioc, "Bioconductor")
 
 # =============================================================================
-# 网络分析
+# 网络分析包
 # =============================================================================
-
-cat("--- 安装网络分析包 ---")
+cat("\n=== Installing Network Analysis Packages ===\n")
 network_packages <- c(
-  "igraph",        # 网络分析
-  "tidygraph",     # 整洁网络
-  "ggraph",        # 网络可视化
-  "visNetwork",    # 交互式网络
-  "networkD3"      # D3网络图
+  "igraph",
+  "network",
+  "sna",
+  "ggraph",
+  "tidygraph",
+  "networkD3",
+  "visNetwork"
 )
 install_if_missing(network_packages, "CRAN")
 
 # =============================================================================
-# 报告生成
+# 报告生成包
 # =============================================================================
-
-cat("--- 安装报告生成包 ---")
+cat("\n=== Installing Report Generation Packages ===\n")
 report_packages <- c(
-  "rmarkdown",     # R Markdown
-  "knitr",         # 动态报告
-  "DT",            # 交互式表格
-  "plotly",        # 交互式图表
-  "htmlwidgets",   # HTML小部件
-  "flexdashboard", # 仪表板
-  "bookdown",      # 书籍格式
-  "pagedown"       # 页面布局
+  "rmarkdown",
+  "knitr",
+  "DT",
+  "plotly",
+  "htmlwidgets",
+  "flexdashboard",
+  "bookdown",
+  "tinytex"
 )
 install_if_missing(report_packages, "CRAN")
 
 # =============================================================================
-# 可选：Python接口
+# 可选的Python接口包
 # =============================================================================
-
-cat("--- 安装Python接口包 ---")
+cat("\n=== Installing Optional Python Interface Packages ===\n")
 python_packages <- c(
-  "reticulate",    # Python接口
-  "basilisk",      # Python环境管理
-  "zellkonverter"  # Python-R数据转换
+  "reticulate",
+  "basilisk",
+  "zellkonverter"
 )
-install_if_missing("zellkonverter", "Bioconductor")
-install_if_missing(python_packages[python_packages != "zellkonverter"], "CRAN")
+install_if_missing(python_packages, "CRAN")
 
 # =============================================================================
-# 验证安装
+# 安装验证
 # =============================================================================
+cat("\n=== Verifying Installation ===\n")
 
-cat("=== 验证关键包安装 ===")
-key_packages <- c("Seurat", "mistyR", "ggplot2", "dplyr", "ComplexHeatmap")
+# 检查关键包是否成功安装
+key_packages <- c(
+  "Seurat", "mistyR", "dplyr", "ggplot2", 
+  "ComplexHeatmap", "future", "igraph"
+)
 
-all_installed <- TRUE
-for (pkg in key_packages) {
-  if (require(pkg, character.only = TRUE, quietly = TRUE)) {
-    cat("✓", pkg, "- 版本:", as.character(packageVersion(pkg)), "")
-  } else {
-    cat("✗", pkg, "- 未安装或加载失败")
-    all_installed <- FALSE
-  }
+installation_status <- sapply(key_packages, function(pkg) {
+  requireNamespace(pkg, quietly = TRUE)
+})
+
+cat("\nInstallation Summary:\n")
+for (i in seq_along(installation_status)) {
+  status <- if (installation_status[i]) "✓ OK" else "✗ FAILED"
+  cat(sprintf("%-20s: %s\n", names(installation_status)[i], status))
 }
 
-# =============================================================================
-# 环境信息
-# =============================================================================
+# 保存环境信息
+cat("\n=== Saving Environment Information ===\n")
+env_info <- list(
+  R_version = R.version.string,
+  platform = R.version$platform,
+  install_date = Sys.Date(),
+  installed_packages = installed.packages()[, c("Package", "Version")]
+)
 
-cat("=== R环境信息 ===")
-cat("R版本:", R.version.string, "")
-cat("平台:", R.version$platform, "")
-cat("安装完成时间:", Sys.time(), "")
+saveRDS(env_info, "R_environment_info.rds")
+cat("Environment information saved to R_environment_info.rds\n")
 
-if (all_installed) {
-  cat("🎉 所有关键包安装成功！")
-  cat("现在可以运行c2l-mistyR分析流程了。")
-} else {
-  cat("⚠️  部分包安装失败，请检查错误信息。")
-}
-
-# 保存会话信息
-writeLines(capture.output(sessionInfo()), "R_session_info.txt")
-cat("会话信息已保存到: R_session_info.txt")
-
-cat("=== 安装脚本完成 ===")
+# 输出完成信息
+cat("\n" + paste(rep("=", 60), collapse = "") + "\n")
+cat("🎉 R Package Installation Complete! 🎉\n")
+cat(paste(rep("=", 60), collapse = "") + "\n")
+cat("\nNext steps:\n")
+cat("1. Load the MistyR template: source('src/MistyR_Universal_Template.R')\n")
+cat("2. Configure your analysis: source('src/config_example.R')\n")
+cat("3. Run your analysis: run_mistyR_analysis()\n")
+cat("\nFor help and documentation, visit: https://github.com/Crorazon/c2l-mistyR-analysis\n")
