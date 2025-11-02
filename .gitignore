@@ -1,0 +1,291 @@
+# =============================================================================
+# Cell2location-MistyR-MCP Project .gitignore
+# =============================================================================
+
+# R specific
+# -----------
+.Rproj.user/
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+.Rapp.history
+.httr-oauth
+.DS_Store
+.quarto
+
+# R session Data files
+.RData
+.RDataTmp
+
+# User-specific files
+.Ruserdata
+
+# R Environment Variables
+.Renviron
+.Rprofile
+
+# R package building
+*.tar.gz
+*.tgz
+/man/
+/Meta/
+/doc/
+inst/doc/
+
+# R check results
+*.Rcheck/
+
+# R temporary files
+*~
+*.swp
+*.swo
+
+# Python specific
+# ---------------
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# pipenv
+Pipfile.lock
+
+# PEP 582
+__pypackages__/
+
+# Celery stuff
+celerybeat-schedule
+celerybeat.pid
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Data files
+# ----------
+# Large data files
+*.h5
+*.h5ad
+*.h5seurat
+*.rds
+*.RDS
+*.csv
+*.tsv
+*.txt
+*.xlsx
+*.xls
+*.mtx
+*.gz
+*.bz2
+*.zip
+*.tar
+*.7z
+
+# Spatial transcriptomics data
+spatial/
+filtered_feature_bc_matrix/
+raw_feature_bc_matrix/
+analysis/
+cloupe.cloupe
+web_summary.html
+metrics_summary.csv
+possorted_genome_bam.bam*
+molecule_info.h5
+
+# Cell2location outputs
+cell2location_results/
+c2l_models/
+*.pkl
+*.pickle
+
+# MistyR outputs
+mistyR_results/
+mistyR_cache/
+*.misty/
+
+# Results and outputs
+# -------------------
+results/
+output/
+outputs/
+figures/
+plots/
+reports/
+cache/
+temp/
+tmp/
+logs/
+*.log
+
+# System files
+# -------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+*~
+
+# IDE and editor files
+# --------------------
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.atom/
+.brackets.json
+
+# OS generated files
+# ------------------
+.directory
+.fuse_hidden*
+.nfs*
+
+# Temporary files
+# ---------------
+*.tmp
+*.temp
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+
+# Configuration files with sensitive data
+# ----------------------------------------
+config_local.R
+config_private.R
+.secrets
+credentials.json
+api_keys.txt
+
+# Large reference datasets
+# ------------------------
+reference_data/
+scRNA_reference/
+spatial_reference/
+annotation_data/
+
+# Computational outputs
+# ---------------------
+*.out
+*.err
+*.o[0-9]*
+*.e[0-9]*
+slurm-*.out
+*.pbs
+
+# Documentation build
+# -------------------
+_build/
+.doctrees/
+.buildinfo
+
+# Package management
+# ------------------
+renv/
+renv.lock
+.Rprofile.local
+
+# Conda environments
+# ------------------
+environment.yml.lock
+conda-meta/
+
+# Node.js (if using any JS tools)
+# --------------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Custom project ignores
+# -----------------------
+# Add any project-specific files to ignore here
+test_data/
+sandbox/
+experiments/
+deprecated/
